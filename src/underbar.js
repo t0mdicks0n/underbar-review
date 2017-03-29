@@ -268,11 +268,35 @@
   //     bla: "even more stuff"
   //   }); // obj1 now contains key1, key2, key3 and bla
   _.extend = function(obj) {
+    var obj1 = arguments[0];
+
+    var objects = Array.prototype.slice.apply(arguments);
+
+    objects.forEach(function(element, index, array) {
+      for (var key in element) {
+        obj1[key] = element[key];
+      }
+    });
+
+    return obj1;
   };
 
   // Like extend, but doesn't ever overwrite a key that already
   // exists in obj
   _.defaults = function(obj) {
+    var obj1 = arguments[0];
+
+    var objects = Array.prototype.slice.apply(arguments);
+
+    objects.forEach(function(element, index, array) {
+      for (var key in element) {
+        if (!(key in obj1)) {
+          obj1[key] = element[key];
+        }
+      }
+    });
+
+    return obj1;
   };
 
 
@@ -320,6 +344,20 @@
     // for the object, the keys will be the arguments; the values will be the results of the function
     let result = {};
 
+    // key = [1,2,3]
+    // object
+
+    return function () {
+      var args = Array.prototype.slice.call(arguments);
+      if (args in result) {
+        return result[args];
+      } else {
+        result[args] = func.apply(null, args);
+        return result[args];
+      }
+
+    }
+
     // if the arguments passed exist in result object
       // return the value (i.e., result[arguments])
     // else
@@ -334,6 +372,8 @@
   // parameter. For example _.delay(someFunction, 500, 'a', 'b') will
   // call someFunction('a', 'b') after 500ms
   _.delay = function(func, wait) {
+    var args = Array.prototype.slice.apply(arguments).splice(2);
+    return setTimeout(arguments[0], arguments[1], args[0], args[1]);
   };
 
 
@@ -348,6 +388,15 @@
   // input array. For a tip on how to make a copy of an array, see:
   // http://mdn.io/Array.prototype.slice
   _.shuffle = function(array) {
+    var arr = array.slice();
+
+    for (var i = 0; i < 100; i++) {
+      var rand = Math.random() * (arr.length - 0) + 0
+      
+      arr.push(arr.splice(rand, 1)[0]);
+    }
+
+    return arr;
   };
 
 
