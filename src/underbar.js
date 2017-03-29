@@ -209,7 +209,7 @@
       //
 
       // if accumulator is false, the return false
-      // set accumulator to truthTest over item
+      // set accumulator to truthTest over item   
 
     if (typeof truthTest === 'undefined') {
       truthTest = _.identity;
@@ -225,7 +225,7 @@
       //     return false;
       //   }
       // }
-      
+
       if (!accum) {
         return false;
       }
@@ -236,8 +236,16 @@
 
   // Determine whether any of the elements pass a truth test. If no iterator is
   // provided, provide a default one
-  _.some = function(collection, iterator) {
+  _.some = function(collection, truthTest) {
     // TIP: There's a very clever way to re-use every() here.
+    if (typeof truthTest === 'undefined') {
+      truthTest = _.identity;
+    }
+
+    return !_.every(collection, function(item) {
+      return !truthTest(item) ? !truthTest(item) : !truthTest(item);
+
+    });
   };
 
 
@@ -308,6 +316,15 @@
   // already computed the result for the given argument and return that value
   // instead if possible.
   _.memoize = function(func) {
+    // need an object to store result of calling functions with specific parameters
+    // for the object, the keys will be the arguments; the values will be the results of the function
+    let result = {};
+
+    // if the arguments passed exist in result object
+      // return the value (i.e., result[arguments])
+    // else
+      // run the function and store the result in the object(i.e., result[arguments] = **func(arguments)**)
+      // return the newly inserted key/value in result (i.e., result[arguments])
   };
 
   // Delays a function for the given number of milliseconds, and then calls
